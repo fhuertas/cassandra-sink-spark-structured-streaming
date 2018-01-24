@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  cassandra:
+    image: "cassandra:3.11"
+    volumes:
+      - ./vol:/vol
+    ports:
+      - "9042:9042"
