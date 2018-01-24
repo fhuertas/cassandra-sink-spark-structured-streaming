@@ -23,9 +23,8 @@ class CassandraSinkTest extends FlatSpec with Matchers with DatasetSuiteBase {
     import session.implicits._
 
     // Prepare data
-    val data = Gen.listOfN(Gen.choose(10, 100).sample.get, genTuple(genWord, genWord)).sample.get
+    val data = Gen.listOfN(Gen.choose(10, 100).sample.get, genTuple(genWord, genWord)).sample.get.toMap.toSeq
     val keys = data.map(_._1).toSet
-    val expected = data.toMap.toSet
     val inputStream = MemoryStream[(String, String)]
 
     // First element of the table is the key
@@ -38,12 +37,12 @@ class CassandraSinkTest extends FlatSpec with Matchers with DatasetSuiteBase {
     // Collect result
     val result = spark.read.format("org.apache.spark.sql.cassandra").options(CassandraOpt)
       .load().as[(String, String)].collect().filter(row => keys.contains(row._1))
-    result.toSet shouldBe expected
+    result.toSet shouldBe data.toSet
   }
 }
 
 object CassandraSinkTest {
-  def genWord: Gen[String] = Gen.oneOf(Seq("wrestle", "husky", "cactus", "slip", "appreciate", "multiply", "doubtful",
+  val genWord: Gen[String] = Gen.oneOf(Seq("wrestle", "husky", "cactus", "slip", "appreciate", "multiply", "doubtful",
     "share", "deep", "waste", "tiger", "smart", "educate", "heavy", "crayon", "pathetic", "connection", "identify",
     "repulsive", "sticks", "longing", "visit", "condemned", "wise", "ghost", "luxuriant", "ants", "resonant", "natural",
     "short", "adamant", "melt", "disillusioned", "youthful", "muddle", "brief", "pushy", "orange", "wing", "coast",

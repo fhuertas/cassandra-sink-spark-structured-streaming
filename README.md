@@ -1,5 +1,7 @@
 # sink-cassandra-structured-streaming
 
+[![Build Status](https://travis-ci.org/fhuertas/cassandra-sink-spark-structured-streaming.svg?branch=master)](https://travis-ci.org/fhuertas/cassandra-sink-spark-structured-streaming)
+
 Unoffical sink for cassandra for spark structured streaming. Is under develop
 
 ## Test
