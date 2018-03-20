@@ -1,12 +1,9 @@
 
 # IntelliJ files
-*.iml
 .idea
 
 # Scala compilatiopn files
 target/
-*.class
 *.log
-.gitignore
 
 .credentials
