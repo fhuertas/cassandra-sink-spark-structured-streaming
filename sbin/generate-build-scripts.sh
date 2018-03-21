@@ -3,13 +3,11 @@ SPARK_VERSION=${1:-"2.2.1"}
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" ;pwd)"
 
 if [[ "${SPARK_VERSION}" == "2.2.0" ]]; then
-    CASSANDRA_CONNECTOR_VERSION="2.0.6"
-    HOLDENK_VERSION="${SPARK_VERSION}_0.8.0"
+    CASSANDRA_CONNECTOR_VERSION="2.0.7"
+    HOLDENK_VERSION="${SPARK_VERSION}_0.9.0"
 elif [[ "${SPARK_VERSION}" == "2.2.1" ]]; then
-    CASSANDRA_CONNECTOR_VERSION="2.0.6"
-    HOLDENK_VERSION="2.2.0_0.8.0"
-    echo "Not supported spark version: $SPARK_VERSION"
-    exit 1
+    CASSANDRA_CONNECTOR_VERSION="2.0.7"
+    HOLDENK_VERSION="${SPARK_VERSION}_0.9.0"
 else
     echo "Invalid Spark Version: $SPARK_VERSION"
     exit 1

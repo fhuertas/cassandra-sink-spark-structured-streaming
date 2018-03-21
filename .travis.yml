@@ -13,9 +13,16 @@ scala:
    - 2.11.12
 
 script:
+   - sbin/generate-build-scripts.sh 2.2.1;
+   - sbt ++$TRAVIS_SCALA_VERSION coverage test
+   - sbt ++$TRAVIS_SCALA_VERSION coverageReport
    - sbin/generate-build-scripts.sh 2.2.0;
    - sbt ++$TRAVIS_SCALA_VERSION coverage test
    - sbt ++$TRAVIS_SCALA_VERSION coverageReport
+
 after_success:
    - sbt ++$TRAVIS_SCALA_VERSION coveralls
+   - sbin/generate-build-scripts.sh 2.2.1;
+   - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt ++$TRAVIS_SCALA_VERSION publish; };"
+   - sbin/generate-build-scripts.sh 2.2.0;
    - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt ++$TRAVIS_SCALA_VERSION publish; };"
