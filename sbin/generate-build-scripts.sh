@@ -2,14 +2,10 @@
 SPARK_VERSION=${1:-"2.2.1"}
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" ;pwd)"
 
-if [[ "${SPARK_VERSION}" == "2.2.0" ]]; then
-    CASSANDRA_CONNECTOR_VERSION="2.0.6"
-    HOLDENK_VERSION="${SPARK_VERSION}_0.8.0"
-elif [[ "${SPARK_VERSION}" == "2.2.1" ]]; then
-    CASSANDRA_CONNECTOR_VERSION="2.0.6"
-    HOLDENK_VERSION="2.2.0_0.8.0"
-    echo "Not supported spark version: $SPARK_VERSION"
-    exit 1
+if [[ "${SPARK_VERSION}" == "2.2.0" ]] || [[ "${SPARK_VERSION}" == "2.2.1" ]] ; then
+    CASSANDRA_CONNECTOR_VERSION="2.0.7"
+#elif [[ "${SPARK_VERSION}" == "2.2.1" ]]; then
+#    CASSANDRA_CONNECTOR_VERSION="2.0.7"
 else
     echo "Invalid Spark Version: $SPARK_VERSION"
     exit 1
@@ -24,9 +20,7 @@ libraryDependencies+="com.datastax.spark" %% "spark-cassandra-connector" % "${CA
 // Privided
 libraryDependencies+="org.apache.spark" %% "spark-core" % "${SPARK_VERSION}" % "provided"
 libraryDependencies+="org.apache.spark" %% "spark-sql" % "${SPARK_VERSION}" % "provided"
-//Test
-libraryDependencies+="com.holdenkarau" %% "spark-testing-base" % "${HOLDENK_VERSION}" % "test"
-libraryDependencies+="org.apache.spark" %% "spark-hive" % "${SPARK_VERSION}" % "test"
+libraryDependencies += "org.apache.spark" %% "spark-streaming" % "${SPARK_VERSION}" % "provided"
 EOF
 
 sed  -i -e "s/^name := \"cassandra-sink_.*/name := \"cassandra-sink_${SPARK_VERSION}\"/g" ${BASE_DIR}/../build.sbt

@@ -1,26 +1,29 @@
 package com.fhuertas.spark.sql.cassandra
 
-import com.holdenkarau.spark.testing.DatasetSuiteBase
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.apache.spark.sql.execution.streaming.MemoryStream
 import org.scalacheck.Gen
 import org.scalatest.{FlatSpec, Matchers}
 
-class CassandraSinkTest extends FlatSpec with Matchers with DatasetSuiteBase {
+class CassandraSinkTest extends FlatSpec with Matchers {
   import CassandraSinkTest._
 
   lazy val configuration: Config = ConfigFactory.load()
 
-  lazy val CassandraOpt: Map[String, String] = loadAsMap(configuration, "test.cassandra")
+  lazy val CassandraOpt: Map[String, String] = loadAsMap(configuration, "test.cassandra") + ("checkpointLocation" -> s"target/checkpoint-${System.currentTimeMillis}")
   lazy val awaitTime: Long = configuration.getLong("test.awaitTermination")
 
-  implicit lazy val session: SparkSession = spark
+  implicit lazy val spark: SparkSession = SparkSession.builder
+    .master("local")
+    .appName("CassandraConnectorTest")
+    .getOrCreate()
+  implicit lazy val ctx: SQLContext = spark.sqlContext
 
 
   it should "store a stream data set in cassandra" in {
-    import session.implicits._
+    import spark.implicits._
 
     // Prepare data
     val data = Gen.listOfN(Gen.choose(10, 100).sample.get, genTuple(genWord, genWord)).sample.get.toMap.toSeq
