@@ -8,8 +8,11 @@ Unoffical sink for cassandra for spark structured streaming. This connector only
 ## Usage
 
 First, you should include the dependency in your code.
-
-*In progress*
+```Scala
+libraryDependencies += "com.fhuertas" %% "cassandra_sink_2.2.0" % "1.0.0"
+// Or 
+libraryDependencies += "com.fhuertas" %% "cassandra_sink_2.2.1" % "1.0.0"
+```
 
 This connector is used like others structured streaming connectors. This is a code example
 that how to use the connectors
