@@ -3,19 +3,27 @@ sudo: true
 
 services: docker
 
-before_install:
- - docker pull cassandra:3.11
- - docker run -d --name cassandra -v $(pwd)/integration/vol:/vol -p 9042:9042 cassandra:3.11
- - docker exec cassandra sh -c /vol/init_db.sh
-
 scala:
    - 2.10.7
    - 2.11.12
 
+env:
+  matrix:
+    - SPARK_VERSION=2.2.1
+    - SPARK_VERSION=2.2.0
+
+before_install:
+  - docker pull cassandra:3.11
+  - docker run -d --name cassandra -v $(pwd)/integration/vol:/vol -p 9042:9042 cassandra:3.11
+  - docker exec cassandra sh -c /vol/init_db.sh
+
+before_script:
+  - sbin/generate-build-scripts.sh ${SPARK_VERSION}
+
 script:
-   - sbin/generate-build-scripts.sh 2.2.0;
    - sbt ++$TRAVIS_SCALA_VERSION coverage test
    - sbt ++$TRAVIS_SCALA_VERSION coverageReport
+
 after_success:
    - sbt ++$TRAVIS_SCALA_VERSION coveralls
-   - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt ++$TRAVIS_SCALA_VERSION publish; };"
+   - "[[ \"$TRAVIS_BRANCH\" == \"master\" ]] && { sbt ++$TRAVIS_SCALA_VERSION publish; };"
