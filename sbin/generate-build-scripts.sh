@@ -4,14 +4,13 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" ;pwd)"
 
 if [[ "${SPARK_VERSION}" == "2.2.0" ]] || [[ "${SPARK_VERSION}" == "2.2.1" ]] ; then
     CASSANDRA_CONNECTOR_VERSION="2.0.7"
-#elif [[ "${SPARK_VERSION}" == "2.2.1" ]]; then
-#    CASSANDRA_CONNECTOR_VERSION="2.0.7"
+
 else
     echo "Invalid Spark Version: $SPARK_VERSION"
     exit 1
 fi
 
-echo "Genrate library.sbt for Spark ${SPARK_VERSION}"
+echo "Generate library.sbt for Spark ${SPARK_VERSION}"
 
 #cat
 cat <<EOF > ${BASE_DIR}/../libraries.sbt
