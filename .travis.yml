@@ -50,11 +50,7 @@ jobs:
     env: SPARK_VERSION=2.2.0
     script: source sbin/functions.sh; publish
 
-  - stage: cosas
-    script: echo $TRAVIS_PULL_REQUEST
-
 stages:
-  - cosas
   - build
   - publish
 

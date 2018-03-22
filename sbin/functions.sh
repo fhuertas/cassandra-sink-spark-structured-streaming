@@ -62,7 +62,7 @@ publish() {
         write_version ${TRAVIS_TAG/v}
     fi
     # Work a round because NOT type in (pull_request) not work correctly
-    if [[ "${TRAVIS_PULL_REQUEST}" == "" ]]; then
+#    if [[ "${TRAVIS_PULL_REQUEST}" == "" ]]; then
         sbt ++$TRAVIS_SCALA_VERSION publish
-    fi
+#    fi
 }
