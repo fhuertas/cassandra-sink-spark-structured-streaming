@@ -10,12 +10,6 @@ un_setup_git() {
   git config user.name "Francisco Huertas"
 }
 
-
-my_test() {
-echo "--$1--"
-
-}
-
 read_version_no_snapshot() {
     VERSION=$(cat version.sbt)
     VERSION=${VERSION/-SNAPSHOT\"/}
@@ -39,21 +33,28 @@ create_mayor_version() {
     echo "Current branch"
     echo "Next mayor version: ${NEXT_VERSION}"
     echo "Creating new branch: ${NEXT_BRANCH}"
-    set -x
     git checkout -b ${NEXT_BRANCH}
 
     write_version "${VERSION}-RC0-SNAPSHOT"
     setup_git
-#    git commit -a -m "Travis: Version branch"
-#    git push origin ${NEXT_BRANCH}
+    git commit -a -m "Generated: new version branch"
+    git push "https://${GH_TOKEN}@${GH_REPO}" ${NEXT_BRANCH}
     git checkout ${PREV_BRANCH}
-    write_version "${NEXT_VERSION}-SNAPSHOT"
-    git commit -a -m "Travis: Up master version"
-    git push "https://6b8e18657700683c6b9e4f3b9cd86a640dd133b6@${GH_REPO}" ${PREV_BRANCH}
+#    write_version "${NEXT_VERSION}-SNAPSHOT"
+#    git commit -a -m "Travis: Up master version"
+#    git push "https://${GH_TOKEN}@${GH_REPO}" ${PREV_BRANCH}
     un_setup_git
-    set +x
+}
+
+build() {
+    docker pull cassandra:3.11
+    docker run -d --name cassandra -v $(pwd)/integration/vol:/vol -p 9042:9042 cassandra:3.11
+    docker exec cassandra sh -c /vol/init_db.sh
+    sbin/generate-build-scripts.sh ${SPARK_VERSION}
+    sbt ++$TRAVIS_SCALA_VERSION coverage test
+    sbt ++$TRAVIS_SCALA_VERSION coverageReport
 }
 
 publish() {
-   VERSION=$(read_version_no_snapshot)
+    sbt ++$TRAVIS_SCALA_VERSION publish
 }

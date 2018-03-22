@@ -3,27 +3,55 @@ sudo: true
 
 services: docker
 
-scala:
-   - 2.10.7
-   - 2.11.12
+jobs:
+  include:
+  - stage: build
+    scala: 2.11.12
+    env: SPARK_VERSION=2.2.1
+    script: source sbin/functions.sh; build
 
-env:
-  matrix:
-    - SPARK_VERSION=2.2.1
-    - SPARK_VERSION=2.2.0
+  - stage: build
+    scala: 2.10.7
+    env: SPARK_VERSION=2.2.1
+    script: source sbin/functions.sh; build
 
-before_install:
-  - docker pull cassandra:3.11
-  - docker run -d --name cassandra -v $(pwd)/integration/vol:/vol -p 9042:9042 cassandra:3.11
-  - docker exec cassandra sh -c /vol/init_db.sh
+  - stage: build
+    scala: 2.11.12
+    env: SPARK_VERSION=2.2.0
+    script: source sbin/functions.sh; build
 
-before_script:
-  - sbin/generate-build-scripts.sh ${SPARK_VERSION}
+  - stage: build
+    scala: 2.10.7
+    env: SPARK_VERSION=2.2.0
+    script: source sbin/functions.sh; build
 
-script:
-   - sbt ++$TRAVIS_SCALA_VERSION coverage test
-   - sbt ++$TRAVIS_SCALA_VERSION coverageReport
+# Publish
+  - stage: publish
+    if: branch = master
+    scala: 2.11.12
+    env: SPARK_VERSION=2.2.1
+    script: source sbin/functions.sh; publish
 
-after_success:
-   - sbt ++$TRAVIS_SCALA_VERSION coveralls
-   - "[[ \"$TRAVIS_BRANCH\" == \"master\" ]] && { sbt ++$TRAVIS_SCALA_VERSION publish; };"
+  - stage: publish
+    if: branch = master
+    scala: 2.10.7
+    env: SPARK_VERSION=2.2.1
+    script: source sbin/functions.sh; publish
+
+  - stage: publish
+    if: branch = master
+    scala: 2.11.12
+    env: SPARK_VERSION=2.2.0
+    script: source sbin/functions.sh; publish
+
+  - stage: publish
+    if: branch = master
+    scala: 2.10.7
+    env: SPARK_VERSION=2.2.0
+    script: source sbin/functions.sh; publish
+
+
+stages:
+  - build
+  - publish
+
