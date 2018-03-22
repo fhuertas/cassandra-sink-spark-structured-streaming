@@ -56,5 +56,9 @@ build() {
 }
 
 publish() {
-    sbt ++$TRAVIS_SCALA_VERSION publish
+    if [[ "${TRAVIS_TAG}" != "" ]]; then
+        write_version ${TRAVIS_TAG/v}
+    fi
+
+    sbt ++$TRAVIS_SCALA_VERSION clean publish
 }

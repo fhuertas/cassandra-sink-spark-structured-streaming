@@ -27,31 +27,38 @@ jobs:
 
 # Publish
   - stage: publish
-    if: branch = master
+    if: branch = master OR tag =~ ^v[1-9]
     scala: 2.11.12
     env: SPARK_VERSION=2.2.1
     script: source sbin/functions.sh; publish
 
   - stage: publish
-    if: branch = master
+    if: branch = master OR tag =~ ^v[1-9]
     scala: 2.10.7
     env: SPARK_VERSION=2.2.1
     script: source sbin/functions.sh; publish
 
   - stage: publish
-    if: branch = master
+    if: branch = master OR tag =~ ^v[1-9]
     scala: 2.11.12
     env: SPARK_VERSION=2.2.0
     script: source sbin/functions.sh; publish
 
   - stage: publish
-    if: branch = master
+    if: branch = master OR tag =~ ^v[1-9]
     scala: 2.10.7
     env: SPARK_VERSION=2.2.0
     script: source sbin/functions.sh; publish
 
+
+  - stage: tag
+    if: tag =~ ^v[1-9]
+    scala: 2.11.12
+    env: SPARK_VERSION=2.2.1
+    script: echo ${TRAVIS_TAG}
 
 stages:
+  - tag
   - build
   - publish
 
