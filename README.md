@@ -3,16 +3,18 @@
 [![Build Status](https://travis-ci.org/fhuertas/cassandra-sink-spark-structured-streaming.svg?branch=master)](https://travis-ci.org/fhuertas/cassandra-sink-spark-structured-streaming)
 [![Coverage Status](https://coveralls.io/repos/github/fhuertas/cassandra-sink-spark-structured-streaming/badge.svg?branch=multibuild)](https://coveralls.io/github/fhuertas/cassandra-sink-spark-structured-streaming?branch=multibuild)
 
-Unoffical sink for cassandra for spark structured streaming. Is under develop
+Unoffical sink for cassandra for spark structured streaming. This connector only support **append** mode
 
-## Test
-For testing it is neecesary to have a cassandra database with a simple simple table like this
+## Usage
 
-```cql
-CREATE TABLE test.test_table (
-  first text PRIMARY KEY,
-  second text);
+First, you should include the dependency in your code.
+
+*In progress*
+
+This connector is used like others structured streaming connectors. This is a code example
+that how to use the connectors
+```Scala
+dataframe.writeStream.options(...).start()
 ```
 
-And create a application.conf with the configuration to access to this table in the 
-test resource folder
+You can see an example in the test: *CassandraSinkTest*
