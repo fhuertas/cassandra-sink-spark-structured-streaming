@@ -4,10 +4,10 @@ pomIncludeRepository := { _ => false }
 
 
 useGpg := false
-usePgpKeyHex("2673B174C4071B0E")
 pgpPublicRing := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg"
 pgpSecretRing := baseDirectory.value / "project" / ".gnupg" / "secring.gpg"
 pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+usePgpKeyHex("2673B174C4071B0E")
 
 
 publishTo := {
