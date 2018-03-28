@@ -4,11 +4,13 @@ pomIncludeRepository := { _ => false }
 
 
 useGpg := false
-usePgpKeyHex("8ADC06D466A4C009")
+usePgpKeyHex("F44BF62EA9AF85E6")
 pgpPublicRing := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg"
 pgpSecretRing := baseDirectory.value / "project" / ".gnupg" / "secring.gpg"
 pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
 
+
+isSnapshot := version.value endsWith "SNAPSHOT"
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
@@ -19,7 +21,7 @@ publishTo := {
 }
 
 licenses := Seq("Apache License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
-homepage := Some(url("https://www.github.com/fhuertas/cassandra-sink-spark-structured-streaming.git"))
+homepage := Some(url("https://github.com/fhuertas/cassandra-sink-spark-structured-streaming"))
 
 scmInfo := Some(
   ScmInfo(
@@ -34,3 +36,24 @@ developers := List(
     email="francisco@fhuertas.com",
     url=url("https://www.fhuertas.com")
   ))
+
+//pomExtra := (
+//  <url></url>
+//    <licenses>
+//      <license>
+//        <name></name>
+//        <url></url>
+//        <distribution>repo</distribution>
+//      </license>
+//    </licenses>
+//    <scm>
+//      <url>git@github.com:</url>
+//      <connection></connection>
+//    </scm>
+//    <developers>
+//      <developer>
+//        <id></id>
+//        <name></name>
+//        <url></url>
+//      </developer>
+//    </developers>)

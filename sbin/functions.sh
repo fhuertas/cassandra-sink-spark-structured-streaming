@@ -57,10 +57,19 @@ build() {
 }
 
 publish() {
+    GH_REPO=github.com/fhuertas/cassandra-sink-spark-structured-streaming
     if [[ "${TRAVIS_TAG}" != "" ]]; then
-      write_version ${TRAVIS_TAG/v}
-      sbt ++$TRAVIS_SCALA_VERSION release
-    else
-      sbt ++$TRAVIS_SCALA_VERSION publish
+      VERSION=${TRAVIS_TAG/v}
+      write_version ${VERSION}
+      setup_git
+      git add version.sbt
+      git commit -m "Release Commit: ${VERSION}"
+      git push "https://${GH_TOKEN}@${GH_REPO}" :${TRAVIS_TAG}
+      git tag -a ${VERSION} -m "Release ${VERSION}."
+      git push "https://${GH_TOKEN}@${GH_REPO}" ${VERSION}
+      un_setup_git
+      sbt ++${TRAVIS_SCALA_VERSION} release
+    elif [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
+      sbt ++${TRAVIS_SCALA_VERSION} publish
     fi
 }
