@@ -6,51 +6,65 @@ services: docker
 jobs:
   include:
   - stage: build
+    if: (NOT tag ~= ^v[0-9])
     scala: 2.11.12
     env: SPARK_VERSION=2.2.1
     script: source sbin/functions.sh; build
 
   - stage: build
+    if: (NOT (tag ~= ^v[0-9]))
     scala: 2.10.7
     env: SPARK_VERSION=2.2.1
     script: source sbin/functions.sh; build
 
   - stage: build
+    if: (NOT tag ~= ^v[0-9])
     scala: 2.11.12
     env: SPARK_VERSION=2.2.0
     script: source sbin/functions.sh; build
 
   - stage: build
+    if: (NOT tag ~= ^v[0-9])
     scala: 2.10.7
     env: SPARK_VERSION=2.2.0
     script: source sbin/functions.sh; build
+
+# Version
+  - stage: version
+    if: tag =~ ^v[0-9]
+    script: source sbin/functions.sh; new_version
+
+  - stage: remote_tag
+    if: tag =~ ^v[0-9]
+    script: source sbin/functions.sh; remove_tag
 
 # Publish
-  - stage: publish
-    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
-    scala: 2.11.12
-    env: SPARK_VERSION=2.2.1
-    script: source sbin/functions.sh; publish
-
-  - stage: publish
-    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
-    scala: 2.10.7
-    env: SPARK_VERSION=2.2.1
-    script: source sbin/functions.sh; publish
-
-  - stage: publish
-    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
-    scala: 2.11.12
-    env: SPARK_VERSION=2.2.0
-    script: source sbin/functions.sh; publish
-
-  - stage: publish
-    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
-    scala: 2.10.7
-    env: SPARK_VERSION=2.2.0
-    script: source sbin/functions.sh; publish
+#  - stage: publish
+#    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^[0-9])
+#    scala: 2.11.12
+#    env: SPARK_VERSION=2.2.1
+#    script: source sbin/functions.sh; publish
+#
+#  - stage: publish
+#    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^[0-9])
+#    scala: 2.10.7
+#    env: SPARK_VERSION=2.2.1
+#    script: source sbin/functions.sh; publish
+#
+#  - stage: publish
+#    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^[0-9])
+#    scala: 2.11.12
+#    env: SPARK_VERSION=2.2.0
+#    script: source sbin/functions.sh; publish
+#
+#  - stage: publish
+#    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^[0-9])
+#    scala: 2.10.7
+#    env: SPARK_VERSION=2.2.0
+#    script: source sbin/functions.sh; publish
 
 stages:
   - build
-  - publish
-
+  - version
+#  - publish
+#  - remote_tag
