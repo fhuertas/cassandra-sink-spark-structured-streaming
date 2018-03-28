@@ -57,12 +57,10 @@ build() {
 }
 
 publish() {
-
     if [[ "${TRAVIS_TAG}" != "" ]]; then
-        write_version ${TRAVIS_TAG/v}
+      write_version ${TRAVIS_TAG/v}
+      sbt ++$TRAVIS_SCALA_VERSION release
+    else
+      sbt ++$TRAVIS_SCALA_VERSION publish
     fi
-    # Work a round because NOT type in (pull_request) not work correctly
-#    if [[ "${TRAVIS_PULL_REQUEST}" == "" ]]; then
-        sbt ++$TRAVIS_SCALA_VERSION publish
-#    fi
 }
