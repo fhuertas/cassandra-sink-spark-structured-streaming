@@ -7,6 +7,11 @@ jobs:
   include:
   - stage: build
     scala: 2.11.12
+    env: SPARK_VERSION=2.3.0
+    script: source sbin/functions.sh; build
+
+  - stage: build
+    scala: 2.11.12
     env: SPARK_VERSION=2.2.1
     script: source sbin/functions.sh; build
 
