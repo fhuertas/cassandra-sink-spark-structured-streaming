@@ -11,6 +11,9 @@ if [[ "${SPARK_VERSION}" == "2.2.0" ]] || [[ "${SPARK_VERSION}" == "2.2.1" ]] ; 
 elif [[ "${SPARK_VERSION}" == "2.3.0" ]]; then
     CASSANDRA_CONNECTOR_VERSION="2.3.0"
     CROSS_SCALA_VERSION=''
+elif [[ "${SPARK_VERSION}" == "2.3.1" ]]; then
+    CASSANDRA_CONNECTOR_VERSION="2.3.0"
+    CROSS_SCALA_VERSION=''
 else
     echo "Invalid Spark Version: $SPARK_VERSION"
     exit 1
