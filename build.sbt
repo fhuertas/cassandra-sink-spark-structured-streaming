@@ -28,9 +28,10 @@ lazy val root = project
     name := "cassandra-sink",
     scalaVersion := "2.11.12",
     coverageMinimum := 95,
-    coverageFailOnMinimum := true
+    coverageFailOnMinimum := true,
+    publishArtifact := false
   )
   .aggregate(allModules: _*)
 
-addCommandAlias("ci-all",  ";+clean ;+compile ;+test ;+package")
-addCommandAlias("release", ";+publishSigned ;sonatypeReleaseAll")
+addCommandAlias("ci-all",  ";+clean; +compile; +coverage; +test; +package; +coverageReport; coverageAggregate")
+addCommandAlias("release", ";+publishSigned; sonatypeReleaseAll")

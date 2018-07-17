@@ -14,7 +14,7 @@ jobs:
 #    script: source sbin/functions.sh; build
 
   - stage: build
-    script: sbt +ci-all
+    script: sbt ci-all coveralls
 
 # Publish
 #  - stage: publish
