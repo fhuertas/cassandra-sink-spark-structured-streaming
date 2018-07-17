@@ -3,6 +3,9 @@ sudo: true
 
 services: docker
 
+scala:
+  2.10.7
+  2.11.12
 jobs:
   include:
 #  - stage: build
@@ -11,24 +14,7 @@ jobs:
 #    script: source sbin/functions.sh; build
 
   - stage: build
-    scala: 2.11.12
-    env: SPARK_VERSION=2.2.1
-    script: source sbin/functions.sh; build
-
-  - stage: build
-    scala: 2.10.7
-    env: SPARK_VERSION=2.2.1
-    script: source sbin/functions.sh; build
-
-  - stage: build
-    scala: 2.11.12
-    env: SPARK_VERSION=2.2.0
-    script: source sbin/functions.sh; build
-
-  - stage: build
-    scala: 2.10.7
-    env: SPARK_VERSION=2.2.0
-    script: source sbin/functions.sh; build
+    script: sbt +ci-all
 
 # Publish
 #  - stage: publish
@@ -62,5 +48,5 @@ jobs:
 
 stages:
   - build
-  - publish
+#  - publish
 
