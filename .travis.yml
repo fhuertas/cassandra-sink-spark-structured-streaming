@@ -5,6 +5,11 @@ services: docker
 
 jobs:
   include:
+#  - stage: build
+#    scala: 2.11.12
+#    env: SPARK_VERSION=2.3.0
+#    script: source sbin/functions.sh; build
+
   - stage: build
     scala: 2.11.12
     env: SPARK_VERSION=2.2.1
@@ -26,6 +31,11 @@ jobs:
     script: source sbin/functions.sh; build
 
 # Publish
+#  - stage: publish
+#    if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
+#    scala: 2.11.12
+#    env: SPARK_VERSION=2.3.0
+
   - stage: publish
     if: NOT type IN (pull_request) AND (branch = master OR tag =~ ^v[1-9])
     scala: 2.11.12
