@@ -1,5 +1,6 @@
 import sbt.Keys._
 import sbt._
+import com.typesafe.sbt.SbtPgp.autoImport._
 import scoverage.ScoverageKeys._
 object ProjectPlugin extends AutoPlugin {
 
@@ -12,7 +13,6 @@ object ProjectPlugin extends AutoPlugin {
       val TypesafeConfig = "1.3.2"
       val ScalaCheck = "1.13.5"
     }
-
 
     lazy val V220 = new {
       val CassandraConnector = "2.0.7"

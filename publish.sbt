@@ -1,16 +1,16 @@
-publishMavenStyle := true
+publishMavenStyle in ThisBuild := true
 
-pomIncludeRepository := { _ => false }
+pomIncludeRepository in ThisBuild := { _ => false }
 
 
-useGpg := false
+useGpg in ThisBuild := false
 usePgpKeyHex("2673B174C4071B0E")
-pgpPublicRing := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg"
-pgpSecretRing := baseDirectory.value / "project" / ".gnupg" / "secring.gpg"
-pgpPassphrase := sys.env.get("PGP_PASS").map(_.toArray)
+pgpPublicRing in ThisBuild := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg"
+pgpSecretRing in ThisBuild := baseDirectory.value / "project" / ".gnupg" / "secring.gpg"
+pgpPassphrase in ThisBuild := sys.env.get("PGP_PASS").map(_.toArray)
 
 
-publishTo := {
+publishTo in ThisBuild := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
@@ -18,7 +18,7 @@ publishTo := {
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
-pomExtra :=
+pomExtra in ThisBuild :=
   <url>https://github.com/fhuertas/cassandra-sink-spark-structured-streaming</url>
     <licenses>
       <license>
