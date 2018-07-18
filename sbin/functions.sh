@@ -19,7 +19,7 @@ read_version_no_snapshot() {
 
 write_version() {
     VERSION=$1
-    echo "version := \"${VERSION}\"" > version.sbt
+    echo "version in ThisBuild:= \"${VERSION}\"" > version.sbt
 }
 create_mayor_version() {
     # TODO en travis!
