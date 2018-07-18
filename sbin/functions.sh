@@ -71,3 +71,26 @@ publish() {
       sbt ++$TRAVIS_SCALA_VERSION publish
     fi
 }
+
+replace_tag() {
+    setup_git
+    echo "Delete pre-release branch"
+    COMMENT=git tag -l -n9 ${TRAVIS_TAG}
+    git push origin :${TRAVIS_TAG}
+    VERSION=${TRAVIS_TAG/v}
+    write_version ${VERSION}
+    git commit -a
+
+    git push
+    un_setup_git
+}
+release() {
+    set -x
+    echo "hola caracola"
+#    write_version ${TRAVIS_TAG/v}
+    OUTPUT=`curl https://api.github.com/repos/fhuertas/cassandra-sink-spark-structured-streaming/tags`
+    echo $OUTPUT
+    set +x
+
+
+}

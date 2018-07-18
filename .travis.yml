@@ -1,32 +1,37 @@
-language: scala
+language: bash
+#language: scala
 sudo: true
 
-services: docker
+#services: docker
 
 jobs:
   include:
-  - stage: build
-    scala: 2.11.12
-    script: source sbin/functions.sh; init-docker; build
-    if: NOT branch = master OR type = pull_request
+#  - stage: build
+#    scala: 2.11.12
+#    script: source sbin/functions.sh; init-docker; build
+#    if: NOT branch = master OR type = pull_request AND NOT tag IS blank
+#
+#  - stage: build
+#    scala: 2.10.7
+#    script: source sbin/functions.sh; init-docker; build
+#    if: NOT branch = master OR type = pull_request AND NOT tag =~ ^tt[1-9]
 
-  - stage: build
-    scala: 2.10.7
-    script: source sbin/functions.sh; init-docker; build
-    if: NOT branch = master OR type = pull_request
-
-# Publish
-  - stage: publish
-    script: source sbin/functions.sh; init-docker; publish_snapshot
-    scala: 2.11.12
-    if: branch = master AND tag IS blank AND type = push
-
-  - stage: publish
-    script: source sbin/functions.sh; init-docker; publish_snapshot
-    scala: 2.10.7
-    if: branch = master AND tag IS blank AND type = push
+## Publish
+#  - stage: publish
+#    script: source sbin/functions.sh; init-docker; publish_snapshot
+#    scala: 2.11.12
+#    if: branch = master AND tag IS blank AND type = push
+#
+#  - stage: publish
+#    script: source sbin/functions.sh; init-docker; publish_snapshot
+#    scala: 2.10.7
+#    if: branch = master AND tag IS blank AND type = push
 
 # Release
+  - stage: publish
+    language: bash
+    script: source sbin/functions.sh; release
+    if: tag =~ ^tt[1-9]
 
 #
 #  - stage: publish
