@@ -18,7 +18,7 @@ publishTo := {
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
-pomExtra :=
+pomExtra := (
   <url>https://github.com/fhuertas/cassandra-sink-spark-structured-streaming</url>
     <licenses>
       <license>
@@ -37,4 +37,4 @@ pomExtra :=
         <name>Francisco Huertas</name>
         <url>http://www.fhuertas.com</url>
       </developer>
-    </developers>
+    </developers>)

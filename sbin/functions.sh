@@ -46,17 +46,14 @@ create_mayor_version() {
     un_setup_git
 }
 
-init-docker() {
+build() {
     docker pull cassandra:3.11
     docker run -d --name cassandra -v $(pwd)/integration/vol:/vol -p 9042:9042 cassandra:3.11
     docker exec cassandra sh -c /vol/init_db.sh
-}
-
-build() {
-    sbt ++${TRAVIS_SCALA_VERSION} coverage test
-    sbt ++${TRAVIS_SCALA_VERSION} coverageReport
-    sbt ++${TRAVIS_SCALA_VERSION} coverageAggregate
-    sbt ++${TRAVIS_SCALA_VERSION} coveralls
+    sbin/generate-build-scripts.sh ${SPARK_VERSION}
+    sbt ++$TRAVIS_SCALA_VERSION coverage test
+    sbt ++$TRAVIS_SCALA_VERSION coverageReport
+    sbt ++$TRAVIS_SCALA_VERSION coveralls
 }
 
 publish() {
