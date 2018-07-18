@@ -8,12 +8,12 @@ jobs:
   - stage: build
     scala: 2.11.12
     script: source sbin/functions.sh; init-docker; build
-    if: NOT branch = master
+    if: NOT branch = master OR type = pull_request
 
   - stage: build
     scala: 2.10.7
     script: source sbin/functions.sh; init-docker; build
-    if: NOT branch = master
+    if: NOT branch = master OR type = pull_request
 
 # Publish
   - stage: publish
