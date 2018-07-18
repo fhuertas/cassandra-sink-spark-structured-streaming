@@ -59,6 +59,10 @@ build() {
     sbt ++${TRAVIS_SCALA_VERSION} coveralls
 }
 
+publish_snapshot() {
+   sbt ++$TRAVIS_SCALA_VERSION publish
+}
+
 publish() {
     if [[ "${TRAVIS_TAG}" != "" ]]; then
       write_version ${TRAVIS_TAG/v}
