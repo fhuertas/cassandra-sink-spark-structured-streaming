@@ -1,8 +1,7 @@
-language: bash
-#language: scala
+language: scala
 sudo: true
 
-#services: docker
+services: docker
 
 jobs:
   include:
