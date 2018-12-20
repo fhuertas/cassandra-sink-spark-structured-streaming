@@ -22,7 +22,7 @@ class CassandraSinkTest extends FlatSpec with Matchers {
   implicit lazy val ctx: SQLContext = spark.sqlContext
 
 
-  it should "store a stream data set in cassandra for spark 2.2.0" in {
+  it should "store a stream data set in cassandra for spark 2.3.1" in {
     import spark.implicits._
 
     // Prepare data
